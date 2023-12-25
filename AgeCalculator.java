@@ -35,6 +35,9 @@ public class AgeCalculator {
 
         } catch (ParseException e) {
             System.out.println("Invalid date format. Please enter the date in the format MM/dd/yyyy.");
+        } finally {
+            // Close the scanner
+            scanner.close();
         }
     }
 
@@ -68,11 +71,7 @@ public class AgeCalculator {
 
         long totalDays = daysBetween(birthCalendar, currentCalendar);
 
-        int weeks = (int) (totalDays / 7);
-
-        long hours = hoursBetween(birthCalendar, currentCalendar);
-
-        return new AgeInfo(years, months, weeks, days, hours, totalDays);
+        return new AgeInfo(years, months, days, totalDays);
     }
 
     private static long daysBetween(Calendar startDate, Calendar endDate) {
@@ -81,26 +80,16 @@ public class AgeCalculator {
         return (endMillis - startMillis) / (24 * 60 * 60 * 1000);
     }
 
-    private static long hoursBetween(Calendar startDate, Calendar endDate) {
-        long startMillis = startDate.getTimeInMillis();
-        long endMillis = endDate.getTimeInMillis();
-        return (endMillis - startMillis) / (60 * 60 * 1000);
-    }
-
     private static class AgeInfo {
         private final int years;
         private final int months;
-        private final int weeks;
         private final int days;
-        private final long hours;
         private final long totalDays;
 
-        public AgeInfo(int years, int months, int weeks, int days, long hours, long totalDays) {
+        public AgeInfo(int years, int months, int days, long totalDays) {
             this.years = years;
             this.months = months;
-            this.weeks = weeks;
             this.days = days;
-            this.hours = hours;
             this.totalDays = totalDays;
         }
 
@@ -112,16 +101,8 @@ public class AgeCalculator {
             return months;
         }
 
-        public int getWeeks() {
-            return weeks;
-        }
-
         public int getDays() {
             return days;
-        }
-
-        public long getHours() {
-            return hours;
         }
 
         public long getTotalDays() {
@@ -138,6 +119,9 @@ public class AgeCalculator {
 
         public long getTotalMonths() {
             int totalMonths = years * 12 + months;
+            if (days > 0) {
+                totalMonths++;
+            }
             return totalMonths;
         }
 
