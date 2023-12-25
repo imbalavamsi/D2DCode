@@ -138,9 +138,6 @@ public class AgeCalculator {
 
         public long getTotalMonths() {
             int totalMonths = years * 12 + months;
-            if (days > 0) {
-                totalMonths++;
-            }
             return totalMonths;
         }
 
